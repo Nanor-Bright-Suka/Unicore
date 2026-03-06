@@ -61,6 +61,10 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/v1/admin/**").authenticated()
 
+                        .requestMatchers("/api/v1/assignment/**").authenticated()
+
+                        .requestMatchers("/api/v1/assignment-submission/**").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
