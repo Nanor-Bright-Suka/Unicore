@@ -47,3 +47,38 @@ Screenshots demonstrating the endpoints are included below.
 ### COURSE MANAGEMENT
 
 ![Swagger Documentation](documentation/courses.png)
+
+
+# Assignment & Submission API
+
+## Overview
+
+This module implements the **Assignment** and **Assignment Submission** workflows for the learning system.
+
+### Workflow
+
+1. Lecturer creates an assignment
+2. Lecturer publishes the assignment
+3. Students view and submit assignments
+4. Lecturer reviews and grades submissions
+
+All endpoints are secured using **JWT authentication** and **permission-based authorization**.
+
+---
+
+# Assignment Endpoints
+
+![Swagger Documentation](documentation/assignment.png)
+
+
+# Assignment Submission Endpoints
+
+Supported operations:
+
+- Submit assignment (PDF upload)
+- View submission
+- View all submissions for an assignment
+- View student submission
+- Grade submission
+
+![Swagger Documentation](documentation/submission.png)
