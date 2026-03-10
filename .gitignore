@@ -44,3 +44,4 @@ docker-compose.dev.yml
 # Spring Boot properties files
 application-dev.properties
 
+uploads/

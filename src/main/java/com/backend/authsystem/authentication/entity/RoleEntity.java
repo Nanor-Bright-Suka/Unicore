@@ -3,10 +3,7 @@ package com.backend.authsystem.authentication.entity;
 
 import com.backend.authsystem.authentication.enums.RoleEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -14,7 +11,8 @@ import java.util.Set;
 import java.util.UUID;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -41,6 +39,19 @@ public class RoleEntity {
         private Instant createdAt;
 
         private Instant updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RoleEntity)) return false;
+        RoleEntity that = (RoleEntity) o;
+        return roleId != null && roleId.equals(that.roleId);
+    }
+
+    @Override
+    public int hashCode() {
+        return roleId != null ? roleId.hashCode() : 0;
+    }
 
     public void addPermission(PermissionEntity permission) {
         this.permissions.add(permission);

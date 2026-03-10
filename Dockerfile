@@ -45,6 +45,9 @@ RUN addgroup -S nanor \
 
 WORKDIR /app
 
+# Create uploads folder and set ownership
+RUN mkdir -p /app/uploads && chown -R nanor:nanor /app/uploads
+
 # Copy jar from build stage
 COPY --from=build /app/app.jar ./app.jar
 

@@ -49,7 +49,7 @@ public class CourseService {
         CourseEntity course = CourseMapper.toEntity(request, user);
         log.debug("Mapped CourseCreateRequestDto to Course entity: {}", course);
 
-        courseRepository.save(course);
+      courseRepository.save(course);
         log.info("Course {} created successfully by user {}", course.getCourseId(), user.getEmail());
 
         return CourseMapper.toResponse(course);

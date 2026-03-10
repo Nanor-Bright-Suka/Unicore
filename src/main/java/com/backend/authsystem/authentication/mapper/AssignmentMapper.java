@@ -6,8 +6,6 @@ import com.backend.authsystem.authentication.dto.AssignmentUpdateRequestDto;
 import com.backend.authsystem.authentication.entity.AssignmentEntity;
 import com.backend.authsystem.authentication.entity.CourseEntity;
 
-import java.util.UUID;
-
 public class AssignmentMapper {
 
 
@@ -30,7 +28,7 @@ public class AssignmentMapper {
     // inside Assignment.java
     public static AssignmentEntity createDraftAssignment(AssignmentCreateRequestDto request, CourseEntity course) {
       return AssignmentEntity.builder()
-                .assignmentId(UUID.randomUUID())
+//                .assignmentId(UUID.randomUUID())
                 .title(request.title())
                 .description(request.description())
                 .course(course)

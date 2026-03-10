@@ -38,6 +38,7 @@ public class AssignmentSubmissionController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Assignment submitted successfully", response));
     }
 
+
     @Operation(
             summary = "View Submission",
             description = "Retrieves a single assignment submission by ID. Requires 'ASSIGNMENT_SUBMISSION_VIEW' authority. Returns the AssignmentSubmissionResponse."

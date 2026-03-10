@@ -53,7 +53,7 @@ public class AssignmentService {
      AccountEntity currentUser = authenticatedUserService.getCurrentUserAccount();
 
         CourseEntity course = getCourseEntity(request.courseId());
-        log.debug("Fetched course entity to create assignment: {}", course);
+        log.debug("Fetched course entity to create assignment: {}", course.getTitle());
 
         if (!(course.getState() == CourseState.ENROLLMENT_OPEN || course.getState() == CourseState.ACTIVE)) {
             log.error("Assignment creation blocked: course {} in state {}", course.getCourseId(), course.getState());
@@ -67,10 +67,10 @@ public class AssignmentService {
 
         AssignmentEntity assignment = AssignmentMapper.createDraftAssignment(request, course);
 
-        assignmentRepository.save(assignment);
+     AssignmentEntity  savedAssignment =   assignmentRepository.save(assignment);
         log.info("User {} created assignment '{}' for course {}", currentUser.getUserId(), request.title(), course.getCourseId());
 
-        return AssignmentMapper.toResponseDto(assignment);
+        return AssignmentMapper.toResponseDto(savedAssignment);
     }
 
 
@@ -80,7 +80,7 @@ public class AssignmentService {
         AccountEntity currentUser = authenticatedUserService.getCurrentUserAccount();
 
         AssignmentEntity assignment = getAssignmentEntity(assignmentId);
-        log.debug("Fetched assignment entity to update assignment: {}", assignment);
+        log.debug("Fetched assignment entity to update assignment: {}", assignment.getAssignmentId());
         // --- State check ---
         if (assignment.getState() != AssignmentState.DRAFT && assignment.getState() != AssignmentState.PUBLISHED) {
             log.error("Assignment {} in state {} cannot be updated", assignment.getAssignmentId(), assignment.getState());
@@ -106,9 +106,9 @@ public class AssignmentService {
         AccountEntity currentUser = authenticatedUserService.getCurrentUserAccount();
 
         AssignmentEntity assignment = getAssignmentEntity(assignmentId);
-        log.debug("Fetched course entity to publish assignment: {}", assignment);
+        log.debug("Fetched course entity to publish assignment: {}", assignment.getAssignmentId());
         CourseEntity course = getCourseEntity(assignment.getCourse().getCourseId());
-        log.debug("Fetched course entity to publish assignment: {}", course);
+        log.debug("Fetched course entity to publish assignment: {}", course.getCourseId());
 
         // --- State check ---
         if (assignment.getState() != AssignmentState.DRAFT) {
@@ -146,7 +146,7 @@ public class AssignmentService {
         AccountEntity currentUser = authenticatedUserService.getCurrentUserAccount();
 
         AssignmentEntity assignment = getAssignmentEntity(assignmentId);
-        log.debug("Fetched assignment entity to close assignment submission: {}", assignment);
+        log.debug("Fetched assignment entity to close assignment submission: {}", assignment.getAssignmentId());
 
         if (assignment.getState() != AssignmentState.PUBLISHED) {
             log.warn("Cannot close submissions for assignment {}: current state is {}", assignment.getAssignmentId(), assignment.getState());
@@ -170,7 +170,7 @@ public class AssignmentService {
         AccountEntity currentUser = authenticatedUserService.getCurrentUserAccount();
 
         AssignmentEntity assignment = getAssignmentEntity(assignmentId);
-        log.debug("Fetched assignment entity to start grading assignment: {}", assignment);
+        log.debug("Fetched assignment entity to start grading assignment: {}", assignment.getAssignmentId());
 
         if (assignment.getState() != AssignmentState.SUBMISSION_CLOSED) {
             log.warn("Cannot start grading assignment submissions for assignment {}: current state is {}", assignment.getAssignmentId(), assignment.getState());
@@ -236,7 +236,7 @@ public class AssignmentService {
         AccountEntity currentUser = authenticatedUserService.getCurrentUserAccount();
 
         AssignmentEntity assignment = getAssignmentEntity(assignmentId);
-        log.debug("Fetched assignment entity to view courses: {}", assignment);
+        log.debug("Fetched assignment entity to view courses: {}", assignment.getAssignmentId());
         ///  Check whether student is enrolled in the course or lecturer is the owner of the assignment
         if (currentUser.getUserId() == null || !assignment.getLecturer().getUserId().equals(currentUser.getUserId())) {
             log.warn("Unauthorized user with id{} to view assignment{}", currentUser.getUserId(), assignment.getAssignmentId());

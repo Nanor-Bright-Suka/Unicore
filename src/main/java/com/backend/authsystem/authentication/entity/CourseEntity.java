@@ -59,6 +59,7 @@ public class CourseEntity {
 
     @PrePersist
     protected void onCreate() {
+        this.courseId = UUID.randomUUID();
         this.createdAt = Instant.now();
         this.updatedAt = this.createdAt;
         this.state = CourseState.CREATED;

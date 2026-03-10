@@ -47,7 +47,7 @@ public class AssignmentSubmissionService {
 
 
     private String  sanitizeFileName(String filename) {
-        return filename.replaceAll("[^a-zA-Z0-9\\-]", "_");
+        return filename.replaceAll("[^a-zA-Z0-9\\-_.]", "_");
     }
 
     public AssignmentSubmissionResponseDto submitAssignment(UUID assignmentId, UUID studentId, MultipartFile file) {

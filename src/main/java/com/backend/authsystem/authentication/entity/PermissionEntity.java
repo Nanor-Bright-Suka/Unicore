@@ -2,14 +2,12 @@ package com.backend.authsystem.authentication.entity;
 
 import com.backend.authsystem.authentication.enums.PermissionEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -22,5 +20,18 @@ public class PermissionEntity {
 
     @Enumerated(EnumType.STRING)
     private PermissionEnum permissionName;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PermissionEntity)) return false;
+        PermissionEntity that = (PermissionEntity) o;
+        return permissionId != null && permissionId.equals(that.permissionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return permissionId != null ? permissionId.hashCode() : 0;
+    }
 
 }

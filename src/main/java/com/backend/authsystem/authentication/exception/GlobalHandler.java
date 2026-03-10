@@ -119,6 +119,10 @@ public class GlobalHandler {
         return buildErrorResponse(ex, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(AssignmentStateException.class)
+    public ResponseEntity<ErrorResponse> handleAssignmentStateException(AssignmentStateException ex) {
+        return buildErrorResponse(ex, HttpStatus.CONFLICT);
+    }
 
 
 
