@@ -82,3 +82,17 @@ Supported operations:
 - Grade submission
 
 ![Swagger Documentation](documentation/submission.png)
+
+# Course Enrollment
+
+ This module allows students to enroll in courses and provides endpoints to retrieve enrollment information.
+
+## Features
+
+- Enroll a student in a course
+
+- Get the number of students enrolled in a course
+
+- Retrieve the list of students enrolled in a course
+
+![Swagger Documentation](documentation/enrollment.png)

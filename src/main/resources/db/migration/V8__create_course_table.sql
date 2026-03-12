@@ -7,6 +7,7 @@ CREATE TABLE course (
                         state VARCHAR(50) NOT NULL,
                         semester VARCHAR(50) NOT NULL,
                         academic_year VARCHAR(20) NOT NULL,
+                        max_capacity INT NOT NULL,
                         lecturer_id UUID NOT NULL,
                         created_at TIMESTAMP NOT NULL,
                         updated_at TIMESTAMP NOT NULL,

@@ -22,10 +22,8 @@ public class CourseMapper {
                 .state(CourseState.CREATED)
                 .semester(request.semester())
                 .academicYear(request.academicYear())
-              //  .maxCapacity(request.maxCapacity())
+                .maxCapacity(request.maxCapacity())
                 .lecturer(user)
-//                .createdAt(Instant.now())
-//                .updatedAt(Instant.now())
                 .build();
 
     }
@@ -36,7 +34,7 @@ public class CourseMapper {
         course.setDescription(request.description());
         course.setSemester(request.semester());
         course.setAcademicYear(request.academicYear());
-        //course.setMaxCapacity(request.maxCapacity());
+        course.setMaxCapacity(request.maxCapacity());
 
     }
 
@@ -49,7 +47,7 @@ public class CourseMapper {
                 course.getState(),
                 course.getSemester(),
                 course.getAcademicYear(),
-               // course.getMaxCapacity(),
+                course.getMaxCapacity(),
                 course.getLecturer().getUserId().toString(),
                 course.getCreatedAt(),
                 course.getUpdatedAt()

@@ -15,7 +15,7 @@ public record CourseResponseDto(
         CourseState state,
         Semester semester,
         String academicYear,
-       // int maxCapacity,
+        int maxCapacity,
         String lecturerId,
         Instant createdAt,
         Instant updatedAt
