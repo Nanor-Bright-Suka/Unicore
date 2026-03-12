@@ -12,6 +12,9 @@ public enum PermissionEnum {
 
     // lecturer-level
     // course
+    COURSE_ENROLLMENT_COUNT,
+    COURSE_ENROLLMENT_LIST,
+    COURSE_ENROLLMENT,
     COURSE_CREATE, //(LECTURER)
     COURSE_UPDATE, //(LECTURER)
     COURSE_PUBLISH, //(LECTURER)
@@ -44,7 +47,6 @@ public enum PermissionEnum {
     CLASS_ANNOUNCEMENT_CREATE,
 
     // student-level
-    COURSE_ENROLL,
     COURSE_MATERIAL_VIEW,
     CLASS_FEEDBACK_SUBMIT,
     GENERAL_ANNOUNCEMENT_VIEW,

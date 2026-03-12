@@ -65,6 +65,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/v1/assignment-submission/**").authenticated()
 
+                        .requestMatchers("/api/v1/course-enrollment/**").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

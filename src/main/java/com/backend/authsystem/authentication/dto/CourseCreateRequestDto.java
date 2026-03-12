@@ -30,11 +30,11 @@ public record CourseCreateRequestDto(
         @Schema(description = "Academic year of the course, e.g., 2025/2026", example = "2025/2026")
         @NotBlank(message = "academicYear must not be empty")
         @Size(min = 7, max = 9, message = "academicYear must be in the format YYYY/YYYY")
-        String academicYear
+        String academicYear,
 
-//        @Schema(description = "Maximum number of students allowed", example = "50")
-//        @Positive(message = "maxCapacity must be greater than 0")
-//        int maxCapacity
+        @Schema(description = "Maximum number of students allowed", example = "50")
+        @Positive(message = "maxCapacity must be greater than 0")
+        int maxCapacity
 
 
 

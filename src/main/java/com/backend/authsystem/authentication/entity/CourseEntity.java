@@ -40,10 +40,10 @@ public class CourseEntity {
     private Semester semester;
 
     @Column(nullable = false)
-    private String academicYear; // e.g., "2025/2026"
+    private String academicYear;
 
-//    @Column(nullable = false)
-//    private int maxCapacity;
+    @Column(nullable = false)
+    private int maxCapacity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecturer_id", nullable = false)

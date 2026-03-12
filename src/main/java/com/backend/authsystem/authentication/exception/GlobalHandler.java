@@ -124,6 +124,14 @@ public class GlobalHandler {
         return buildErrorResponse(ex, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(EnrollmentConflictException.class)
+    public ResponseEntity<ErrorResponse> handleEnrollmentConflictException(EnrollmentConflictException ex) {
+        return buildErrorResponse(ex, HttpStatus.BAD_REQUEST);
+    }
+ @ExceptionHandler(EnrollmentNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEnrollmentNotFoundException(EnrollmentNotFoundException ex) {
+        return buildErrorResponse(ex, HttpStatus.NOT_FOUND);
+    }
 
 
 

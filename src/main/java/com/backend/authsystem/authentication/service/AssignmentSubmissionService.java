@@ -39,6 +39,7 @@ public class AssignmentSubmissionService {
     private final AssignmentRepository assignmentRepository;
     private final AuthenticatedUserService authenticatedUserService;
 
+
     @Value("${file.upload.directory}")
     private String uploadDirectory;
 
@@ -87,7 +88,6 @@ public class AssignmentSubmissionService {
                 });
 
         // TODO: enforce student is enrolled in course
-        // if (!enrollmentRepository.isEnrolled(course.getId(), studentId)) throw ...
 
         // 3️⃣ Enforce one submission per student
         if (assignmentSubmissionRepository.existsByAssignment_AssignmentIdAndStudent_UserId(assignmentId, studentId)) {

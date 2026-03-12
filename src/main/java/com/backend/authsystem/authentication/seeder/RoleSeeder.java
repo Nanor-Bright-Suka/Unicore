@@ -62,7 +62,7 @@ public class RoleSeeder implements ApplicationRunner {
                PermissionEnum.ASSIGNMENT_SUBMIT,
                 PermissionEnum.ASSIGNMENT_VIEW,
                 PermissionEnum.ASSIGNMENT_SUBMISSION_VIEW,
-                PermissionEnum.COURSE_ENROLL,
+                PermissionEnum.COURSE_ENROLLMENT,
                 PermissionEnum.COURSE_MATERIAL_VIEW,
                 PermissionEnum.CLASS_FEEDBACK_SUBMIT,
                 PermissionEnum.GENERAL_ANNOUNCEMENT_VIEW
@@ -119,6 +119,8 @@ public class RoleSeeder implements ApplicationRunner {
                 PermissionEnum.COURSE_ARCHIVE,
                 PermissionEnum.COURSE_CREATE,
                 PermissionEnum.COURSE_VIEW,
+                PermissionEnum.COURSE_ENROLLMENT_COUNT,
+                PermissionEnum.COURSE_ENROLLMENT_LIST,
                 PermissionEnum.COURSE_MATERIAL_CREATE,
                 PermissionEnum.COURSE_MATERIAL_UPDATE,
                 PermissionEnum.COURSE_MATERIAL_DELETE,
