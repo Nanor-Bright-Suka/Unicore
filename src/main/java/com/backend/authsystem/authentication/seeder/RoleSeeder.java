@@ -9,6 +9,7 @@ import com.backend.authsystem.authentication.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 
+
+@Profile("!test")
 @Component
 @RequiredArgsConstructor
 @Order(value = 2)
@@ -65,28 +68,10 @@ public class RoleSeeder implements ApplicationRunner {
                 PermissionEnum.COURSE_ENROLLMENT,
                 PermissionEnum.COURSE_MATERIAL_VIEW,
                 PermissionEnum.COURSE_MATERIAL_VIEW_ALL,
-                PermissionEnum.COURSE_MATERIAL_DOWNLOAD,
-                PermissionEnum.CLASS_FEEDBACK_SUBMIT,
-                PermissionEnum.GENERAL_ANNOUNCEMENT_VIEW
+                PermissionEnum.COURSE_MATERIAL_DOWNLOAD
         );
 
 
-        // COURSE REP
-        RoleEntity courseRep = roleRepository.findByRoleName(RoleEnum.ROLE_COURSE_REP)
-                .orElseGet(() -> roleRepository.save(
-                        RoleEntity.builder()
-                                .roleId(UUID.randomUUID())
-                                .roleName(RoleEnum.ROLE_COURSE_REP)
-                                .createdAt(Instant.now())
-                                .build()
-                ));
-
-        add(courseRep,
-              PermissionEnum.CLASS_ANNOUNCEMENT_VIEW,
-                PermissionEnum.CLASS_FEEDBACK_COLLECT,
-                PermissionEnum.CLASS_ANNOUNCEMENT_RELAY,
-                PermissionEnum.CLASS_FEEDBACK_FORWARD
-        );
 
                 // LECTURER
         RoleEntity lecturer = roleRepository.findByRoleName(RoleEnum.ROLE_LECTURER)
@@ -128,9 +113,7 @@ public class RoleSeeder implements ApplicationRunner {
                 PermissionEnum.COURSE_MATERIAL_UPDATE,
                 PermissionEnum.COURSE_MATERIAL_DELETE,
                 PermissionEnum.COURSE_MATERIAL_VIEW_ALL,
-                PermissionEnum.COURSE_MATERIAL_VIEW,
-                PermissionEnum.CLASS_FEEDBACK_VIEW,
-                PermissionEnum.CLASS_ANNOUNCEMENT_CREATE
+                PermissionEnum.COURSE_MATERIAL_VIEW
 
                 );
 
