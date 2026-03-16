@@ -7,6 +7,7 @@ import com.backend.authsystem.authentication.exception.RoleNotFoundException;
 import com.backend.authsystem.authentication.repository.RoleRepository;
 import com.backend.authsystem.authentication.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -25,17 +26,30 @@ public class AdminSeeder implements ApplicationRunner {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
+
+    @Value("${admin.email}")
+    private String adminEmail;
+
+    @Value("${admin.password}")
+    private String adminPassword;
+
+    @Value("${admin.firstname}")
+    private String adminFirstName;
+
+    @Value("${admin.lastname}")
+    private String adminLastName;
+
     @Override
     public void run(ApplicationArguments args) {
-        String adminEmail = "admin@email.com";
-        if (userRepository.existsByEmail(adminEmail)) return;
+        String admnEmail = adminEmail;
+        if (userRepository.existsByEmail(admnEmail)) return;
 
         AccountEntity admin = AccountEntity.builder()
                 .userId(UUID.randomUUID())
-                .firstname("Nanor")
-                .lastname("Admin")
-                .password(passwordEncoder.encode("StrongPassword123"))
-                .email(adminEmail)
+                .firstname(adminFirstName)
+                .lastname(adminLastName)
+                .password(passwordEncoder.encode(adminPassword))
+                .email(admnEmail)
                 .createdAt(Instant.now())
                 .build();
         RoleEntity adminRole = roleRepository.findByRoleName(RoleEnum.ROLE_ADMIN)

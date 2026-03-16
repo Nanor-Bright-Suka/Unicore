@@ -1,9 +1,11 @@
 
 
-Auth System API
-
-This is an authentication and authorization system built with Java/Spring Boot, implementing JWT-based authentication, Role-Based Access Control (RBAC). It includes comprehensive unit and integration tests.
+# Unicore
+UniCore is a backend API implemented in Java Spring Boot for managing university operations. It provides RESTful endpoints for courses, assignments, assignment submissions, and course materials, enforcing academic workflows, student enrollments, and role-based access control (RBAC) for students, lecturers, and admins. Authentication and authorization are fully secured with JWTs, and test cases cover all authentication flows to ensure proper access control and system integrity.The project is containerized using Docker with multi-stage builds, and a CI/CD pipeline ensures automated testing and safe deployment to staging and production environments.
 ****
+
+
+# Authentication & Authorization Module
 
 Features
 

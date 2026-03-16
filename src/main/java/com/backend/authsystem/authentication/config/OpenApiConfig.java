@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Profile;
         public OpenAPI customOpenAPI() {
             return new OpenAPI()
                     .info(new Info()
-                            .title("RBAC SYSTEM API")
+                            .title("UniCore")
                             .version("1.0")
-                            .description("This is the API documentation for the RBAC System, which provides endpoints for user authentication, role management, and permission handling. The API allows clients to register, log in, manage profiles, and perform role-based access control operations.")
+                            .description("UniCore is a backend API implemented in Java Spring Boot for managing university operations. It provides RESTful endpoints for courses, assignments, assignment submissions, and course materials, enforcing academic workflows, student enrollments, and role-based access control (RBAC) for students, lecturers, and admins. Authentication and authorization are fully secured with JWTs, and test cases cover all authentication flows to ensure proper access control and system integrity.The project is containerized using Docker with multi-stage builds, and a CI/CD pipeline ensures automated testing and safe deployment to staging and production environments.")
                     );
         }
     }
