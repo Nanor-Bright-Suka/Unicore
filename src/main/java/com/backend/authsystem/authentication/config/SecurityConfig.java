@@ -47,7 +47,8 @@ public class SecurityConfig {
                                 "/api/v1/auth/health",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/favicon.ico"
+                                "/favicon.ico",
+                                "/webjars/**"
                         ).permitAll()
 
                         .requestMatchers("/api/v1/profile/**").authenticated()

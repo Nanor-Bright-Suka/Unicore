@@ -39,7 +39,8 @@ protected void doFilterInternal(@NotNull HttpServletRequest request,
     if (request.getServletPath().startsWith("/api/v1/auth/") ||
             request.getServletPath().startsWith("/swagger-ui/") ||
             request.getServletPath().startsWith("/v3/api-docs") ||
-            request.getServletPath().startsWith("/favicon.ico")
+            request.getServletPath().startsWith("/favicon.ico") ||
+            request.getServletPath().startsWith("/webjars/")
     ) {
         filterChain.doFilter(request, response);
         return;
