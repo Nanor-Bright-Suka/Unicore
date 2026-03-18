@@ -46,15 +46,11 @@ public class SecurityConfig {
                                 "/api/v1/auth/logout",
                                 "/api/v1/auth/health",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs/**",
-                                "/v3/api-docs"
+                                "/v3/api-docs/**"
                         ).permitAll()
 
-                        // PROFILE endpoints
                         .requestMatchers("/api/v1/profile/**").authenticated()
 
-                        // ACCOUNT endpoints
                         .requestMatchers("/api/v1/account/**").authenticated()
 
                         .requestMatchers("/api/v1/course/**").authenticated()
@@ -86,8 +82,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:8082"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedOrigins(List.of("https://rbac-server-latest.onrender.com"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
 
