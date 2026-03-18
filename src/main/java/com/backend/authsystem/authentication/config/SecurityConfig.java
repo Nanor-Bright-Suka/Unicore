@@ -46,7 +46,8 @@ public class SecurityConfig {
                                 "/api/v1/auth/logout",
                                 "/api/v1/auth/health",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                "/favicon.ico"
                         ).permitAll()
 
                         .requestMatchers("/api/v1/profile/**").authenticated()

@@ -24,12 +24,10 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final CustomUserDetailsService customUserDetailsService;
-    private final HandlerExceptionResolver handlerExceptionResolver;
 
     public JwtAuthenticationFilter(JwtService jwtService, CustomUserDetailsService customUserDetailsService, HandlerExceptionResolver handlerExceptionResolver) {
         this.jwtService = jwtService;
         this.customUserDetailsService = customUserDetailsService;
-        this.handlerExceptionResolver = handlerExceptionResolver;
     }
 
 @Override
@@ -40,7 +38,9 @@ protected void doFilterInternal(@NotNull HttpServletRequest request,
 
     if (request.getServletPath().startsWith("/api/v1/auth/") ||
             request.getServletPath().startsWith("/swagger-ui/") ||
-            request.getServletPath().startsWith("/v3/api-docs")) {
+            request.getServletPath().startsWith("/v3/api-docs") ||
+            request.getServletPath().startsWith("/favicon.ico")
+    ) {
         filterChain.doFilter(request, response);
         return;
     }
