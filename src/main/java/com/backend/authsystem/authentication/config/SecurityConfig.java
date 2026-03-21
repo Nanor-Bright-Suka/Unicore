@@ -25,12 +25,15 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
 
+
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             AuthenticationProvider authenticationProvider
+
     ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationProvider = authenticationProvider;
+
     }
 
     @Bean
@@ -46,28 +49,18 @@ public class SecurityConfig {
                                 "/api/v1/auth/logout",
                                 "/api/v1/auth/health",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/favicon.ico",
-                                "/webjars/**"
+                                "/v3/api-docs/**"
                         ).permitAll()
 
                         .requestMatchers("/api/v1/profile/**").authenticated()
-
                         .requestMatchers("/api/v1/account/**").authenticated()
-
                         .requestMatchers("/api/v1/course/**").authenticated()
-
                         .requestMatchers("/api/v1/admin/**").authenticated()
-
                         .requestMatchers("/api/v1/assignment/**").authenticated()
-
                         .requestMatchers("/api/v1/assignment-submission/**").authenticated()
-
                         .requestMatchers("/api/v1/course-enrollment/**").authenticated()
-
                         .requestMatchers("/api/v1/course-materials/**").authenticated()
-
-                        .anyRequest().authenticated()
+                        .anyRequest().denyAll()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -94,6 +87,8 @@ public class SecurityConfig {
 
         return source;
     }
+
+
 
 
 }

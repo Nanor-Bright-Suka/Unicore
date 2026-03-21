@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,7 +46,7 @@ public class AuthController {
             description = "Registers a new user with the provided details. Returns a success message upon successful registration."
     )
     @PostMapping("/register")
-    public ResponseEntity<@NotNull ApiResponse<Void>> registerUser(@Valid @RequestBody UserRegisterDto newUser) {
+    public ResponseEntity<ApiResponse<Void>> registerUser(@RequestBody @Valid UserRegisterDto newUser) {
        accountService.createUserService(newUser);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -59,8 +58,8 @@ public class AuthController {
             description = "Authenticates user and returns access token in response body and refresh token in HttpOnly cookie"
     )
  @PostMapping("/login")
-    public ResponseEntity<@NotNull ApiResponse<LoginResponseDto>> loginUser(
-            @Valid @RequestBody UserloginDto loginUser,
+    public ResponseEntity<ApiResponse<LoginResponseDto>> loginUser(
+            @RequestBody @Valid UserloginDto loginUser,
             HttpServletResponse response) {
        LoginResponseDto result =  accountService.LoginService(loginUser, response);
         return ResponseEntity

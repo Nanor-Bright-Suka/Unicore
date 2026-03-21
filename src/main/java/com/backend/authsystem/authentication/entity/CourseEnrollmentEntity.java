@@ -33,7 +33,7 @@ public class CourseEnrollmentEntity {
 
     private Instant enrolledAt;
 
-    private boolean isDeleted = false;
+    private boolean isDeleted;
 
     @PrePersist
     public void onCreate() {

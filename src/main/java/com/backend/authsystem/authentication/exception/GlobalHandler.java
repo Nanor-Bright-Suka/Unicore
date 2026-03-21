@@ -1,12 +1,22 @@
 package com.backend.authsystem.authentication.exception;
 
 
+import com.backend.authsystem.authentication.util.ApiResponse;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalHandler {
@@ -146,6 +156,54 @@ public ResponseEntity<ErrorResponse> handleCourseMaterialStateException(CourseMa
     return buildErrorResponse(ex, HttpStatus.CONFLICT);
 }
 
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<?> handleExpired() {
+        return ResponseEntity.status(401).body("Token expired");
+    }
+
+    @ExceptionHandler({MalformedJwtException.class, SignatureException.class, UnsupportedJwtException.class, IllegalArgumentException.class})
+    public ResponseEntity<?> handleInvalid() {
+        return ResponseEntity.status(401).body("Invalid token");
+    }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<?> handleGenericJwt() {
+        return ResponseEntity.status(401).body("Invalid token");
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
+
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.put(error.getField(), error.getDefaultMessage())
+        );
+        ApiResponse<Map<String, String>> response = new ApiResponse<>(
+                false,
+                "Validation failed",
+                errors
+        );
+
+        return ResponseEntity
+                .badRequest()
+                .body(response);
+    }
+
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleBadRequest(HttpMessageNotReadableException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("body", "Malformed JSON request");
+
+        ApiResponse<Map<String, String>> response = new ApiResponse<>(
+                false,
+                "Validation failed",
+                errors
+        );
+
+        return ResponseEntity.badRequest().body(response);
+    }
 
 
 

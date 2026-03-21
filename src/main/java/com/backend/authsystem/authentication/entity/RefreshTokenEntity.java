@@ -29,7 +29,7 @@ public class RefreshTokenEntity {
     private Instant expiresAt;
 
     private Instant createdAt;
-
+    @Builder.Default
     private Boolean revoked = false;
 
     private Instant revokedAt;

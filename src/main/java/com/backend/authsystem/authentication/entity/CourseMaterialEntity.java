@@ -48,7 +48,7 @@ public class CourseMaterialEntity {
 
     private Instant updatedAt;
 
-    private boolean isDeleted = false;
+    private boolean isDeleted;
 
     @PrePersist
     public void onCreate() {

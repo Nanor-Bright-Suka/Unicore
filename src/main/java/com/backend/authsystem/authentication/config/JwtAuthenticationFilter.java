@@ -24,10 +24,12 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final CustomUserDetailsService customUserDetailsService;
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
     public JwtAuthenticationFilter(JwtService jwtService, CustomUserDetailsService customUserDetailsService, HandlerExceptionResolver handlerExceptionResolver) {
         this.jwtService = jwtService;
         this.customUserDetailsService = customUserDetailsService;
+        this.handlerExceptionResolver = handlerExceptionResolver;
     }
 
 @Override
@@ -36,15 +38,11 @@ protected void doFilterInternal(@NotNull HttpServletRequest request,
                                 @NotNull FilterChain filterChain)
         throws ServletException, IOException {
 
-    if (request.getServletPath().startsWith("/api/v1/auth/") ||
-            request.getServletPath().startsWith("/swagger-ui/") ||
-            request.getServletPath().startsWith("/v3/api-docs") ||
-            request.getServletPath().startsWith("/favicon.ico") ||
-            request.getServletPath().startsWith("/webjars/")
-    ) {
-        filterChain.doFilter(request, response);
-        return;
-    }
+    try {
+        if (request.getServletPath().startsWith("/api/v1/auth/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String authHeader = request.getHeader("Authorization");
 
@@ -58,18 +56,21 @@ protected void doFilterInternal(@NotNull HttpServletRequest request,
         String username = jwtService.extractUsername(token);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            if (jwtService.isTokenValid(token, username)) {
-                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (!jwtService.isTokenValid(token, username)) {
+                throw new JwtException("Invalid or expired JWT token");
             }
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 
         filterChain.doFilter(request, response);
+    } catch (JwtException e) {
+        handlerExceptionResolver.resolveException(request, response, null, e);
+    }
 }
-
 }
