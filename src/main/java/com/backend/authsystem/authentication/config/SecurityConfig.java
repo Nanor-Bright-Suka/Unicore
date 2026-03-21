@@ -60,7 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/assignment-submission/**").authenticated()
                         .requestMatchers("/api/v1/course-enrollment/**").authenticated()
                         .requestMatchers("/api/v1/course-materials/**").authenticated()
-                        .anyRequest().denyAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
