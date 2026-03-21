@@ -116,6 +116,6 @@ Supported operations:
 
 ![Swagger Documentation](documentation/course-material.png)
 
-# Swagger UI is publicly available for demo purposes. In a production scenario, these endpoints would be secured.
+# Swagger UI is publicly available at:
 https://rbac-server-latest.onrender.com
 
