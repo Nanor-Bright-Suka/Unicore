@@ -40,6 +40,7 @@ public class AccountService {
     private final AuthenticatedUserService authenticatedUserService;
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
+    private final LoginAttemptService loginAttemptService;
 
 
     public void createUserService(UserRegisterDto newUser) {
@@ -65,12 +66,27 @@ public class AccountService {
     }
 
     public LoginResponseDto LoginService(UserloginDto loginDto, HttpServletResponse response) {
+        String email = loginDto.email().trim();
+        if (loginAttemptService.isBlocked(email)) {
+            long remainingMs = loginAttemptService.getRemainingBlockTime(loginDto.email().trim());
+            long remainingMinutes = (remainingMs + 59999) / 60000;
+
+            throw new TooManyLoginAttemptsException(
+                    "Too many failed login attempts. Try again in " + remainingMinutes + " minutes."
+            );
+        }
+
+
         AccountEntity user = accountRepository.findByEmail(loginDto.email().trim())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         if (!passwordEncoder.matches(loginDto.password().trim(), user.getPassword())) {
+            loginAttemptService.loginFailed(email);
             throw new InvalidCredentialsException("Invalid credentials");
         }
+
+        loginAttemptService.loginSucceeded(email);
+
         String refreshToken = jwtService.generateRefreshToken(user);
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
