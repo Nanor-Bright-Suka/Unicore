@@ -76,7 +76,6 @@ public class AccountService {
             );
         }
 
-
         AccountEntity user = accountRepository.findByEmail(loginDto.email().trim())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 

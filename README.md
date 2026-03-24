@@ -116,6 +116,38 @@ Supported operations:
 
 ![Swagger Documentation](documentation/course-material.png)
 
+
+# Security Features
+
+- This application includes:
+- IP-based Rate Limiting (Bucket4j)
+- Email-based Brute Force Protection for login
+
+## Rate Limiting
+
+Implemented using a Spring Security filter.
+
+| Endpoint                | Limit                    |
+| ----------------------- |--------------------------|
+| `/api/v1/auth/login`    | 15 requests / 10 minutes |
+| `/api/v1/auth/register` | 7 requests / hour        |
+| Others                  | 20 requests / minute     |
+
+### Response on limit exceeded:
+
+- 429 Too Many Requests
+- Includes Retry-After response header indicating when to retry
+
+### Brute Force Protection
+- Tracks failed login attempts per email
+- Blocks login after 5 failed attempts
+- Block duration: 15 minutes
+- Resets on successful login
+
+#### Design
+- Filter → handles IP-based rate limiting
+- Service layer → handles email-based login protection
+
 # Swagger UI is publicly available at:
 https://rbac-server-latest.onrender.com
 
