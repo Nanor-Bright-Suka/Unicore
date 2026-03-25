@@ -58,9 +58,11 @@ class AccountServiceTest {
     @Mock
     private RefreshTokenRepository refreshTokenRepository;
 
+    @Mock
+    private LoginAttemptService loginAttemptService;
+
     @InjectMocks
     private AccountService accountService;
-
 
 
 
@@ -198,6 +200,7 @@ class AccountServiceTest {
         when(passwordEncoder.matches(loginDto.password(), user.getPassword())).thenReturn(true);
         when(jwtService.generateRefreshToken(user)).thenReturn("refreshToken123");
         when(jwtService.generateAccessTokenFromUser(user)).thenReturn("accessToken123");
+        when(loginAttemptService.isBlocked(anyString())).thenReturn(false);
         when(securityEnvironments.getRefreshTokenExpirationInDays()).thenReturn(7);
 
         LoginResponseDto responseDto = accountService.LoginService(loginDto, response);
@@ -214,6 +217,7 @@ class AccountServiceTest {
         when(accountRepository.findByEmail(loginDto.email())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(loginDto.password(), user.getPassword())).thenReturn(true);
         when(jwtService.generateRefreshToken(user)).thenReturn("refreshToken123");
+        when(loginAttemptService.isBlocked(anyString())).thenReturn(false);
         when(securityEnvironments.getRefreshTokenExpirationInDays()).thenReturn(7);
 
         accountService.LoginService(loginDto, response);
@@ -229,6 +233,7 @@ class AccountServiceTest {
 
         when(accountRepository.findByEmail(loginDto.email())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(loginDto.password(), user.getPassword())).thenReturn(true);
+        when(loginAttemptService.isBlocked(anyString())).thenReturn(false);
         when(securityEnvironments.getRefreshTokenExpirationInDays()).thenReturn(7);
 
         accountService.LoginService(loginDto, response);
@@ -246,6 +251,7 @@ class AccountServiceTest {
         when(passwordEncoder.matches(loginDto.password(), user.getPassword())).thenReturn(true);
         when(jwtService.generateRefreshToken(user)).thenReturn("refreshToken123");
         when(jwtService.generateAccessTokenFromUser(user)).thenReturn("accessToken123");
+        when(loginAttemptService.isBlocked(anyString())).thenReturn(false);
         when(securityEnvironments.getRefreshTokenExpirationInDays()).thenReturn(7);
 
         accountService.LoginService(loginDto, response);
@@ -266,6 +272,7 @@ class AccountServiceTest {
 
         when(accountRepository.findByEmail(loginDto.email())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(loginDto.password(), user.getPassword())).thenReturn(true);
+        when(loginAttemptService.isBlocked(anyString())).thenReturn(false);
         when(jwtService.generateRefreshToken(user)).thenReturn("refreshToken123");
 
         accountService.LoginService(loginDto, response);
@@ -284,6 +291,7 @@ class AccountServiceTest {
 
         when(accountRepository.findByEmail(loginDto.email())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(loginDto.password(), user.getPassword())).thenReturn(true);
+        when(loginAttemptService.isBlocked(anyString())).thenReturn(false);
         when(jwtService.generateRefreshToken(user)).thenReturn("refreshToken123");
 
         accountService.LoginService(loginDto, response);
@@ -300,7 +308,7 @@ class AccountServiceTest {
 
         UserloginDto loginDto = createLoginDto();
         when(accountRepository.findByEmail(loginDto.email())).thenReturn(Optional.empty());
-
+        when(loginAttemptService.isBlocked(anyString())).thenReturn(false);
         UserNotFoundException exception = assertThrows(
                 UserNotFoundException.class,
                 () -> accountService.LoginService(loginDto, response)
@@ -317,6 +325,7 @@ class AccountServiceTest {
 
         when(accountRepository.findByEmail(loginDto.email())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(loginDto.password(), user.getPassword())).thenReturn(false);
+        when(loginAttemptService.isBlocked(anyString())).thenReturn(false);
 
         InvalidCredentialsException exception = assertThrows(
                 InvalidCredentialsException.class,

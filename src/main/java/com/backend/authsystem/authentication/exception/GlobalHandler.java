@@ -195,6 +195,7 @@ public ResponseEntity<ErrorResponse> handleCourseMaterialStateException(CourseMa
     public ResponseEntity<ApiResponse<Map<String, String>>> handleBadRequest(HttpMessageNotReadableException ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("body", "Malformed JSON request");
+        System.out.println(ex.getMessage());
 
         ApiResponse<Map<String, String>> response = new ApiResponse<>(
                 false,
@@ -205,7 +206,11 @@ public ResponseEntity<ErrorResponse> handleCourseMaterialStateException(CourseMa
         return ResponseEntity.badRequest().body(response);
     }
 
-
+    @ExceptionHandler(TooManyLoginAttemptsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTooManyAttempts(TooManyLoginAttemptsException ex) {
+        ApiResponse<Void> response = new ApiResponse<>(false, ex.getMessage(), null);
+        return ResponseEntity.status(429).body(response);
+    }
 
 
 
