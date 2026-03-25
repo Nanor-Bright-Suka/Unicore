@@ -9,6 +9,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 @Component
+@ConditionalOnProperty(name = "ratelimit.enabled", havingValue = "true", matchIfMissing = true)
 public class RateLimitingFilter extends OncePerRequestFilter {
 
 

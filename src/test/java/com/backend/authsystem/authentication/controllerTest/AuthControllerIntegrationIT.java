@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -49,6 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Testcontainers
+@Import(TestRateLimitingConfig.class)
 class AuthControllerIntegrationIT {
 
 
@@ -205,10 +207,7 @@ class AuthControllerIntegrationIT {
 
         @Test
         void shouldFailRegistrationWhenDefaultRoleMissing() throws Exception {
-            // Do NOT save ROLE_USER
-
             UserRegisterDto newUser = createTestUser();
-
             mockMvc.perform(post("/api/v1/auth/register")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(newUser)))
