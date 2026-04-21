@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +39,17 @@ public class AuthenticatedUserService {
                     return new UserNotFoundException("User not found");
                 });
     }
+
+    public UUID getCurrentUserId() {
+        String email = getCurrentUserEmail();
+        return accountRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    log.error("User not found in DB: {}", email);
+                    return new UserNotFoundException("User not found");
+                })
+                .getUserId();
+    }
+
+
 
 }

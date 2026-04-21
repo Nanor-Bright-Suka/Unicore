@@ -17,6 +17,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -47,6 +49,7 @@ public class CourseMaterialService {
     @Value("${file.upload.max-size-course-material}")
     private DataSize maxFileSize;
 
+    @CacheEvict(value = "courseMaterialsCache", allEntries = true)
     @Transactional
     public MaterialResponseDto createMaterial(UUID courseId,
                                               MultipartFile file,
@@ -67,7 +70,7 @@ public class CourseMaterialService {
             throw new CourseStateException("You are not the lecturer for this course");
         }
 
-        if (!course.getState().equals(CourseState.PUBLISHED)) {
+        if (!course.getState().equals(CourseState.ACTIVE)) {
             log.warn("User {} attempted to create material for unpublished course {}",
                     currentAuthUser.getUserId(), courseId);
             throw new CourseStateException("Course is not published");
@@ -121,9 +124,9 @@ public class CourseMaterialService {
         return CourseMaterialMapper.toResponse(material);
     }
 
-
+    @CacheEvict(value = "courseMaterialsCache", allEntries = true)
     @Transactional
-    public MaterialResponseDto updateMaterial(UUID courseId,
+    public MaterialResponseDto  updateMaterial(UUID courseId,
                                               UUID materialId,
                                               MultipartFile file,
                                               CreateAndUpdateRequestDto EditRequest) {
@@ -150,12 +153,12 @@ public class CourseMaterialService {
             throw new CourseStateException("You are not the lecturer for this course");
         }
 
-        if (!course.getState().equals(CourseState.PUBLISHED)) {
+        if (!course.getState().equals(CourseState.ACTIVE)) {
             log.warn("User {} attempted to update material {} for unpublished {}",
                     currentAuthUser.getUserId(), materialId, courseId);
             throw new CourseStateException("Course is not published ");
         }
-        String savedFilePath = material.getFilePath();
+        String savedFilePath;
         validateMaterialType(EditRequest.materialType(),  EditRequest.videoUrl());
         if (EditRequest.materialType() == CourseMaterialType.FILE
                 && (file == null || file.isEmpty())
@@ -178,7 +181,6 @@ public class CourseMaterialService {
                 throw new FileTypeValidationException("Only PDF or Docx files are allowed");
             }
 
-            // 5️⃣ Upload to local storage
 
             String objectKey = "course-materials/" + courseId + "/" + currentAuthUser.getUserId() + "/" + UUID.randomUUID();
             String sanitizedFileName = sanitizeFileName(file.getOriginalFilename());
@@ -217,6 +219,7 @@ public class CourseMaterialService {
 
     }
 
+    @CacheEvict(value = "courseMaterialsCache", allEntries = true)
     @Transactional
     public void deleteMaterial(UUID materialId) {
         AccountEntity currentUser = authenticatedUserService.getCurrentUserAccount();
@@ -224,7 +227,6 @@ public class CourseMaterialService {
 
         log.info("Lecturer {} requested deletion of material {}", lecturerId, materialId);
 
-        // 2️⃣ Fetch material (only if not deleted)
         CourseMaterialEntity material = materialRepository
                 .findByIdAndIsDeletedFalse(materialId)
                 .orElseThrow(() -> {
@@ -232,19 +234,21 @@ public class CourseMaterialService {
                     return new CourseMaterialNotFoundException("Material not found");
                 });
 
-        // 3️⃣ Check ownership
         if (!material.getCourse().getLecturer().getUserId().equals(currentUser.getUserId())) {
             log.warn("Lecturer {} attempted to delete material {} without permission", lecturerId, materialId);
             throw new CourseStateException("You are not allowed to delete this material");
         }
 
-        // 4️⃣ Soft delete
         material.setDeleted(true);
         materialRepository.save(material);
 
         log.info("Material {} successfully marked as deleted by lecturer {}", materialId, lecturerId);
     }
 
+    @Cacheable(
+            value = "courseMaterialsCache",
+            key = "#courseId + '_' + @authenticatedUserService.getCurrentUserId()"
+    )
         public List<MaterialResponseDto> getMaterialsByCourse(UUID courseId) {
         log.info("Fetching materials for courseId={}", courseId);
         AccountEntity currentUser = authenticatedUserService.getCurrentUserAccount();
@@ -265,11 +269,9 @@ public class CourseMaterialService {
         }
         log.info("User {} is authorized to access materials for course {}", currentUser.getUserId(), courseId);
 
-        // 2️⃣ Fetch materials
         List<CourseMaterialEntity> materials = materialRepository.findAllByCourse_CourseIdAndIsDeletedFalse(courseId);
         log.info("{} material(s) found for course {}", materials.size(), courseId);
 
-        // 3️⃣ Map to response DTOs
         List<MaterialResponseDto> responses = materials.stream()
                 .map(CourseMaterialMapper::toResponse)
                 .collect(Collectors.toList());

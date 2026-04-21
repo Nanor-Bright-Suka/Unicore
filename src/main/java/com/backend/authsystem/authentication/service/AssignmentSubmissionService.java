@@ -16,6 +16,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.unit.DataSize;
@@ -61,20 +63,18 @@ public class AssignmentSubmissionService {
                     return new AssignmentNotFoundException("Assignment not found");
                 });
 
-        //Validate that course exist
         CourseEntity course = assignment.getCourse();
             if (course == null) {
                 log.warn("Associated course not found for assignment: {}", assignmentId);
                 throw new AssignmentNotFoundException("Associated course not found for the assignment");
             }
 
-        // Course must be ENROLLMENT_OPEN or ACTIVE
+
         if (!(course.getState() == CourseState.ENROLLMENT_OPEN || course.getState() == CourseState.ACTIVE)) {
             log.warn("Course {} is not in ENROLLMENT_OPEN or ACTIVE state", course.getCourseId());
             throw new CourseStateException("Course is not open for submissions");
         }
 
-        // Assignment must be PUBLISHED and accept submissions
         if (assignment.getState() != AssignmentState.PUBLISHED) {
             log.warn("Assignment {} is not PUBLISHED", assignmentId);
             throw new IllegalStateException("Assignment is not open for submissions");
@@ -151,6 +151,10 @@ public class AssignmentSubmissionService {
 
     }
 
+    @Cacheable(
+            value = "submissionCache",
+            key = "#submissionId + '_' + @authenticatedUserService.getCurrentUserId()"
+    )
     public AssignmentSubmissionResponseDto getSubmission(UUID submissionId) {
         log.info("Fetching submission: submissionId={}", submissionId);
         AssignmentSubmissionEntity submission = assignmentSubmissionRepository.findBySubmissionId(submissionId)
@@ -204,7 +208,6 @@ public class AssignmentSubmissionService {
     }
 
 
-
     public List<AssignmentSubmissionResponseDto> getSubmissionsForAssignment(UUID assignmentId) {
         log.info("Fetching submissions for assignmentId={}", assignmentId);
 
@@ -232,7 +235,6 @@ public class AssignmentSubmissionService {
 
         log.info("Current user detail: userId={}, role(s)={}", currentUser.getUserId(), currentUser.getRoles());
 
-        // 3️⃣ Fetch all submissions
         List<AssignmentSubmissionEntity> submissions = assignmentSubmissionRepository.findAllByAssignment_AssignmentId(assignmentId);
         log.info("Found {} submission(s) for assignmentId={}", submissions.size(), assignmentId);
 
@@ -266,10 +268,11 @@ public class AssignmentSubmissionService {
     }
 
 
+    @CacheEvict(value = "submissionCache", allEntries = true)
     public AssignmentSubmissionResponseDto gradeSubmission(UUID submissionId, int marks, String feedback) {
         log.info("Grading submission: submissionId={}, marks={}, feedbackLength={}", submissionId, marks, feedback == null ? 0 : feedback.length());
 
-        // 1️⃣ Validate submission exists
+
         AssignmentSubmissionEntity submission = assignmentSubmissionRepository.findBySubmissionId(submissionId)
                 .orElseThrow(() -> {
                     log.warn("Submission not found: {}", submissionId);

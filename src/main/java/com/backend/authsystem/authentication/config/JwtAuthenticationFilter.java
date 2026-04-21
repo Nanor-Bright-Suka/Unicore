@@ -46,7 +46,6 @@ protected void doFilterInternal(@NotNull HttpServletRequest request,
 
         String authHeader = request.getHeader("Authorization");
 
-        // skip filter if no token
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;

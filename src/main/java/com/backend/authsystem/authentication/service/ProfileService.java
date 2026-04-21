@@ -9,6 +9,8 @@ import com.backend.authsystem.authentication.repository.ProfileRepository;
 import com.backend.authsystem.authentication.repository.AccountRepository;
 import com.backend.authsystem.authentication.mapper.ProfileMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 
@@ -20,6 +22,8 @@ public class ProfileService {
     private final AuthenticatedUserService authenticatedUserService;
     private final ProfileMapper profileMapper;
 
+
+   @Cacheable(value = "profileCache", key = "@authenticatedUserService.getCurrentUserEmail()")
     public ProfileResponseDto getMyProfileService() {
         String email = authenticatedUserService.getCurrentUserEmail();
         AccountEntity user = userRepository.findByEmail(email)
@@ -36,10 +40,11 @@ public class ProfileService {
     }
 
 
+
+
+   @CacheEvict(value = "profileCache", key = "@authenticatedUserService.getCurrentUserEmail()")
     public void updateMyProfileService(ProfileUpdateDto dto) {
-
-        String email = authenticatedUserService.getCurrentUserEmail();
-
+       String email = authenticatedUserService.getCurrentUserEmail();
         AccountEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
