@@ -212,6 +212,12 @@ public ResponseEntity<ErrorResponse> handleCourseMaterialStateException(CourseMa
         return ResponseEntity.status(429).body(response);
     }
 
+    @ExceptionHandler(PasswordInvalidException.class)
+    public ResponseEntity<ApiResponse<Void>> handlePasswordInvalidException(PasswordInvalidException  ex) {
+        ApiResponse<Void> response = new ApiResponse<>(false, ex.getMessage(), null);
+        return ResponseEntity.status(400).body(response);
+          }
+
 
 
 

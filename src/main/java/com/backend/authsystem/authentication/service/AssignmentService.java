@@ -238,7 +238,7 @@ public class AssignmentService {
         AssignmentEntity assignment = getAssignmentEntity(assignmentId);
         log.debug("Fetched assignment entity to view courses: {}", assignment.getAssignmentId());
         ///  Check whether student is enrolled in the course or lecturer is the owner of the assignment
-        if (currentUser.getUserId() == null || !assignment.getLecturer().getUserId().equals(currentUser.getUserId())) {
+        if (!assignment.getLecturer().getUserId().equals(currentUser.getUserId())) {
             log.warn("Unauthorized user with id{} to view assignment{}", currentUser.getUserId(), assignment.getAssignmentId());
             throw new AssignmentPermissionException("You do not have the permission to view assignment");
         }

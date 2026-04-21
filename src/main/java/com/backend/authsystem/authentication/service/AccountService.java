@@ -162,7 +162,6 @@ public class AccountService {
     }
 
 
-    // ACCOUNT_VIEW
     public AccountResponseDto getMyAccount() {
         String email = authenticatedUserService.getCurrentUserEmail();
         AccountEntity account = accountRepository.findByEmail(email)
@@ -175,10 +174,10 @@ public class AccountService {
     public void changePassword(ChangePasswordRequestDto dto) {
         String email = authenticatedUserService.getCurrentUserEmail();
         AccountEntity account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalStateException("Account not found"));
+                .orElseThrow(() -> new AssignmentNotFoundException("Account not found"));
 
         if (!passwordEncoder.matches(dto.oldPassword(), account.getPassword())) {
-            throw new IllegalArgumentException("Old password does not match");
+            throw new PasswordInvalidException("Old password does not match");
         }
 
         account.setPassword(passwordEncoder.encode(dto.newPassword()));

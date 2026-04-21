@@ -2,6 +2,7 @@ package com.backend.authsystem.authentication.controller;
 
 import com.backend.authsystem.authentication.dto.profile.ProfileResponseDto;
 import com.backend.authsystem.authentication.dto.profile.ProfileUpdateDto;
+import com.backend.authsystem.authentication.service.AuthenticatedUserService;
 import com.backend.authsystem.authentication.service.ProfileService;
 import com.backend.authsystem.authentication.util.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final AuthenticatedUserService authenticatedUserService;
 
     @Operation(
             summary = "Get My Profile",
@@ -44,7 +46,7 @@ public class ProfileController {
     @PreAuthorize("hasAuthority('PROFILE_UPDATE')")
     public ResponseEntity<ApiResponse<Void>> updateMyProfile(
             @RequestBody ProfileUpdateDto dto) {
-
+        String email = authenticatedUserService.getCurrentUserEmail();
         profileService.updateMyProfileService(dto);
         return ResponseEntity
                 .status(HttpStatus.OK)
