@@ -27,7 +27,7 @@ public class AssignmentSubmissionController {
             summary = "Submit Assignment",
             description = "Allows a student to submit a PDF file for a published assignment. Requires 'ASSIGNMENT_SUBMIT' authority. Returns the submitted AssignmentSubmissionResponse."
     )
-    @PostMapping("/{assignmentId}/submit")
+    @PostMapping("/{assignmentId}")
     @PreAuthorize("hasAuthority('ASSIGNMENT_SUBMIT')")
     public ResponseEntity<ApiResponse<AssignmentSubmissionResponseDto>> submitAssignment(
             @PathVariable UUID assignmentId,
@@ -43,7 +43,7 @@ public class AssignmentSubmissionController {
             summary = "View Submission",
             description = "Retrieves a single assignment submission by ID. Requires 'ASSIGNMENT_SUBMISSION_VIEW' authority. Returns the AssignmentSubmissionResponse."
     )
-    @GetMapping("/{submissionId}/view")
+    @GetMapping("/{submissionId}")
     @PreAuthorize("hasAuthority('ASSIGNMENT_SUBMISSION_VIEW')")
     public ResponseEntity<ApiResponse<AssignmentSubmissionResponseDto>> getSubmission(
             @PathVariable UUID submissionId) {
@@ -57,7 +57,7 @@ public class AssignmentSubmissionController {
             summary = "View All Submissions for Assignment",
             description = "Retrieves all submissions for a specific assignment. Requires 'ASSIGNMENT_SUBMISSION_VIEW' authority. Returns a list of AssignmentSubmissionResponse."
     )
-    @GetMapping("/assignment/{assignmentId}")
+    @GetMapping("/assignments/{assignmentId}")
     @PreAuthorize("hasAuthority('ASSIGNMENT_SUBMISSION_VIEW_ALL')")
     public ResponseEntity<ApiResponse<List<AssignmentSubmissionResponseDto>>> getSubmissionsForAssignment(
             @PathVariable UUID assignmentId) {
@@ -70,7 +70,7 @@ public class AssignmentSubmissionController {
             summary = "Grade Assignment Submission",
             description = "Allows a lecturer to grade a student's submission. Requires 'ASSIGNMENT_GRADE' authority. Returns the updated AssignmentSubmissionResponse."
     )
-    @PatchMapping("/{submissionId}/grade")
+    @PatchMapping("/{submissionId}")
     @PreAuthorize("hasAuthority('ASSIGNMENT_GRADE')")
     public ResponseEntity<ApiResponse<AssignmentSubmissionResponseDto>> gradeSubmission(
             @PathVariable UUID submissionId,

@@ -148,6 +148,6 @@ Implemented using a Spring Security filter.
 - Filter → handles IP-based rate limiting
 - Service layer → handles email-based login protection
 
-# Swagger UI is publicly available at:
+# Available AT
 https://rbac-server-latest.onrender.com
 

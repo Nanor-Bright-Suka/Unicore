@@ -26,7 +26,7 @@ public class AccountController {
             summary = "Get My Account",
             description = "Retrieves the account details of the currently authenticated user. Requires 'ACCOUNT_VIEW' authority. Returns an AccountResponseDto containing the user's account information."
     )
-    @GetMapping("/view-account")
+    @GetMapping
     @PreAuthorize("hasAuthority('ACCOUNT_VIEW')")
     public ResponseEntity<ApiResponse<AccountResponseDto>> getMyAccount() {
         AccountResponseDto response = accountService.getMyAccount();
@@ -38,7 +38,7 @@ public class AccountController {
             summary = "Change Password",
             description = "Allows the currently authenticated user to change their password. Requires 'PASSWORD_CHANGE' authority. Accepts a ChangePasswordRequestDto in the request body containing the old and new passwords, and returns a success message upon successful password change."
     )
-    @PostMapping("/change-password")
+    @PostMapping("/password")
     @PreAuthorize("hasAuthority('PASSWORD_CHANGE')")
     public ResponseEntity<ApiResponse<Void>> changePassword(@RequestBody ChangePasswordRequestDto dto) {
         accountService.changePassword(dto);

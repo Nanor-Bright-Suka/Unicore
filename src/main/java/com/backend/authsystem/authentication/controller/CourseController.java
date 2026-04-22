@@ -200,7 +200,7 @@ public class CourseController {
             summary = "View All Courses",
             description = "View all courses for the  currently authenticated user. Requires 'COURSE_VIEW_ALL' authority."
     )
-    @GetMapping
+    @GetMapping("/courses")
     @PreAuthorize("hasAuthority('COURSE_VIEW_ALL')")
     public ResponseEntity <ApiResponse<List<CourseResponseDto>>> getAllCourses() {
         String userEmail = authenticatedUserService.getCurrentUserEmail();

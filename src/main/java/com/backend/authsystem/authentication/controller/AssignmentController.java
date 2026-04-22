@@ -27,7 +27,7 @@ public class AssignmentController {
             summary = "Create Assignment",
             description = "Allows a lecturer to create a new assignment in DRAFT state. Requires 'COURSE_CREATE' or 'ASSIGNMENT_CREATE' authority. Returns an AssignmentResponse containing assignment details."
     )
-    @PostMapping("/create")
+    @PostMapping
     @PreAuthorize("hasAuthority('ASSIGNMENT_CREATE')")
     public ResponseEntity<ApiResponse<AssignmentResponseDto>> createAssignment(
             @RequestBody AssignmentCreateRequestDto request) {
@@ -41,7 +41,7 @@ public class AssignmentController {
             summary = "Update Assignment",
             description = "Allows a lecturer to update an existing assignment in DRAFT or PUBLISHED state. Requires 'ASSIGNMENT_UPDATE' authority. Returns the updated AssignmentResponse."
     )
-    @PutMapping("/{assignmentId}/update")
+    @PutMapping("/{assignmentId}")
     @PreAuthorize("hasAuthority('ASSIGNMENT_UPDATE')")
     public ResponseEntity<ApiResponse<AssignmentResponseDto>> updateAssignment(
             @PathVariable UUID assignmentId,
@@ -70,7 +70,7 @@ public class AssignmentController {
             summary = "Close Assignment Submissions",
             description = "Allows a lecturer to close submissions for a PUBLISHED assignment. Requires 'ASSIGNMENT_SUBMISSION_CLOSE' authority. Returns the updated AssignmentResponse with submissions closed."
     )
-    @PatchMapping("/{assignmentId}/close-submissions")
+    @PatchMapping("/{assignmentId}/close")
     @PreAuthorize("hasAuthority('ASSIGNMENT_SUBMISSION_CLOSE')")
     public ResponseEntity<ApiResponse<AssignmentResponseDto>> closeSubmissions(
             @PathVariable UUID assignmentId) {
@@ -84,7 +84,7 @@ public class AssignmentController {
             summary = "Start Grading Assignment",
             description = "Allows a lecturer to start grading an assignment after submissions are closed. Requires 'ASSIGNMENT_START_GRADING' authority. Returns the updated AssignmentResponse with state GRADING_IN_PROGRESS."
     )
-    @PatchMapping("/{assignmentId}/start-grading")
+    @PatchMapping("/{assignmentId}/start-grade")
     @PreAuthorize("hasAuthority('ASSIGNMENT_START_GRADING')")
     public ResponseEntity<ApiResponse<AssignmentResponseDto>> startGrading(
             @PathVariable UUID assignmentId) {

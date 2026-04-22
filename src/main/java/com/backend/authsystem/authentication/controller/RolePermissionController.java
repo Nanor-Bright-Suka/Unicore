@@ -33,7 +33,7 @@ public class RolePermissionController {
             summary = "Assign Role to User",
             description = "Assign Role for  currently authenticated user. Requires 'ROLE_ASSIGN' authority."
     )
-    @PatchMapping("/assign-role")
+    @PatchMapping("/role")
     @PreAuthorize("hasAuthority('ROLE_ASSIGN')")
     public ResponseEntity <ApiResponse<RolePermissionResponseDto>> assignRoleToUser(
             @RequestBody AssignRoleRequestDto request) {
@@ -52,7 +52,7 @@ public class RolePermissionController {
             summary = "Assign Permission  to Role",
             description = "Assign Permission to Role for  currently authenticated user. Requires 'PERMISSION_ASSIGN' authority."
     )
-    @PatchMapping("/assign-permission")
+    @PatchMapping("/permission")
     @PreAuthorize("hasAuthority('PERMISSION_ASSIGN')")
     public ResponseEntity<ApiResponse<RolePermissionResponseDto>> assignPermissionsToRole(
             @RequestBody @Valid AssignPermissionRequestDto request) {
