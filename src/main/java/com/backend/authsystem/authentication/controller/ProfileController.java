@@ -27,7 +27,7 @@ public class ProfileController {
             summary = "Get My Profile",
             description = "Retrieves the profile information of the currently authenticated user. Requires 'PROFILE_VIEW' authority."
     )
-    @GetMapping("/viewMe")
+    @GetMapping
     @PreAuthorize("hasAuthority('PROFILE_VIEW')")
     public ResponseEntity<ApiResponse<ProfileResponseDto>> getMyProfile() {
         ProfileResponseDto profileResponseDto = profileService.getMyProfileService();
@@ -42,11 +42,10 @@ public class ProfileController {
             description = "Updates the profile information of the currently authenticated user. Requires 'PROFILE_UPDATE' authority. Accepts a ProfileUpdateDto in the request body and returns a success message upon successful update."
     )
 
-    @PutMapping("/updateProfile")
+    @PutMapping
     @PreAuthorize("hasAuthority('PROFILE_UPDATE')")
     public ResponseEntity<ApiResponse<Void>> updateMyProfile(
             @RequestBody ProfileUpdateDto dto) {
-        String email = authenticatedUserService.getCurrentUserEmail();
         profileService.updateMyProfileService(dto);
         return ResponseEntity
                 .status(HttpStatus.OK)

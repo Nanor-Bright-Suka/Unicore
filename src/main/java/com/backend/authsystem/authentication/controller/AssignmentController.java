@@ -27,7 +27,7 @@ public class AssignmentController {
             summary = "Create Assignment",
             description = "Allows a lecturer to create a new assignment in DRAFT state. Requires 'COURSE_CREATE' or 'ASSIGNMENT_CREATE' authority. Returns an AssignmentResponse containing assignment details."
     )
-    @PostMapping("/create")
+    @PostMapping
     @PreAuthorize("hasAuthority('ASSIGNMENT_CREATE')")
     public ResponseEntity<ApiResponse<AssignmentResponseDto>> createAssignment(
             @RequestBody AssignmentCreateRequestDto request) {
@@ -41,7 +41,7 @@ public class AssignmentController {
             summary = "Update Assignment",
             description = "Allows a lecturer to update an existing assignment in DRAFT or PUBLISHED state. Requires 'ASSIGNMENT_UPDATE' authority. Returns the updated AssignmentResponse."
     )
-    @PutMapping("/{assignmentId}/update")
+    @PutMapping("/{assignmentId}")
     @PreAuthorize("hasAuthority('ASSIGNMENT_UPDATE')")
     public ResponseEntity<ApiResponse<AssignmentResponseDto>> updateAssignment(
             @PathVariable UUID assignmentId,
@@ -56,7 +56,7 @@ public class AssignmentController {
             summary = "Publish Assignment",
             description = "Allows a lecturer to publish a DRAFT assignment, making it available for students to submit. Requires 'ASSIGNMENT_PUBLISH' authority. Returns the updated AssignmentResponse with state PUBLISHED."
     )
-    @PatchMapping("/{assignmentId}/publish")
+    @PatchMapping("/{assignmentId}")
     @PreAuthorize("hasAuthority('ASSIGNMENT_PUBLISH')")
     public ResponseEntity<ApiResponse<AssignmentResponseDto>> publishAssignment(
             @PathVariable UUID assignmentId) {
@@ -70,7 +70,7 @@ public class AssignmentController {
             summary = "Close Assignment Submissions",
             description = "Allows a lecturer to close submissions for a PUBLISHED assignment. Requires 'ASSIGNMENT_SUBMISSION_CLOSE' authority. Returns the updated AssignmentResponse with submissions closed."
     )
-    @PatchMapping("/{assignmentId}/close-submissions")
+    @PatchMapping("/{assignmentId}")
     @PreAuthorize("hasAuthority('ASSIGNMENT_SUBMISSION_CLOSE')")
     public ResponseEntity<ApiResponse<AssignmentResponseDto>> closeSubmissions(
             @PathVariable UUID assignmentId) {
@@ -84,7 +84,7 @@ public class AssignmentController {
             summary = "Start Grading Assignment",
             description = "Allows a lecturer to start grading an assignment after submissions are closed. Requires 'ASSIGNMENT_START_GRADING' authority. Returns the updated AssignmentResponse with state GRADING_IN_PROGRESS."
     )
-    @PatchMapping("/{assignmentId}/start-grading")
+    @PatchMapping("/{assignmentId}")
     @PreAuthorize("hasAuthority('ASSIGNMENT_START_GRADING')")
     public ResponseEntity<ApiResponse<AssignmentResponseDto>> startGrading(
             @PathVariable UUID assignmentId) {
@@ -98,7 +98,7 @@ public class AssignmentController {
             summary = "Mark Assignment Graded",
             description = "Allows a lecturer to mark an assignment as graded after completing grading. Requires 'ASSIGNMENT_MARK_GRADED' authority. Returns the updated AssignmentResponse with state GRADED."
     )
-    @PatchMapping("/{assignmentId}/mark-graded")
+    @PatchMapping("/{assignmentId}")
     @PreAuthorize("hasAuthority('ASSIGNMENT_MARK_GRADED')")
     public ResponseEntity<ApiResponse<AssignmentResponseDto>> markGraded(
             @PathVariable UUID assignmentId) {
@@ -112,7 +112,7 @@ public class AssignmentController {
             summary = "Archive Assignment",
             description = "Allows a lecturer to archive a graded assignment. Requires 'ASSIGNMENT_ARCHIVE' authority. Returns the updated AssignmentResponse with state ARCHIVED."
     )
-    @PatchMapping("/{assignmentId}/archive")
+    @PatchMapping("/{assignmentId}")
     @PreAuthorize("hasAuthority('ASSIGNMENT_ARCHIVE')")
     public ResponseEntity<ApiResponse<AssignmentResponseDto>> archiveAssignment(
             @PathVariable UUID assignmentId) {
