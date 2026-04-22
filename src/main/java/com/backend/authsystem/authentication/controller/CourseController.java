@@ -74,7 +74,7 @@ public class CourseController {
             summary = "Publish Course",
             description = "Publish course of the  currently authenticated user. Requires 'COURSE_PUBLISH' authority."
     )
-    @PatchMapping("/{courseId}")
+    @PatchMapping("/{courseId}/publish")
     @PreAuthorize("hasAuthority('COURSE_PUBLISH')")
     public ResponseEntity <ApiResponse<CourseResponseDto>> publishCourse(@PathVariable UUID courseId) {
         String userEmail = authenticatedUserService.getCurrentUserEmail();
@@ -93,7 +93,7 @@ public class CourseController {
             summary = "Open Course Enrollment",
             description = "Open course enrollment of the  currently authenticated user. Requires 'COURSE_OPEN_ENROLLMENT' authority."
     )
-    @PatchMapping("/{courseId}")
+    @PatchMapping("/{courseId}/open-enrollment")
     @PreAuthorize("hasAuthority('COURSE_OPEN_ENROLLMENT')")
     public ResponseEntity <ApiResponse<CourseResponseDto>> openEnrollment(@PathVariable UUID courseId) {
         String userEmail = authenticatedUserService.getCurrentUserEmail();
@@ -110,7 +110,7 @@ public class CourseController {
             summary = "Close Course Enrollment",
             description = "Close course enrollment of the  currently authenticated user. Requires 'COURSE_CLOSE_ENROLLMENT' authority."
     )
-    @PatchMapping("/{courseId}")
+    @PatchMapping("/{courseId}/close-enrollment")
     @PreAuthorize("hasAuthority('COURSE_CLOSE_ENROLLMENT')")
     public ResponseEntity <ApiResponse<CourseResponseDto>> closeEnrollment(@PathVariable UUID courseId) {
         String userEmail = authenticatedUserService.getCurrentUserEmail();
@@ -128,7 +128,7 @@ public class CourseController {
             summary = "Start Course",
             description = "Start course for the  currently authenticated user. Requires 'COURSE_START' authority."
     )
-    @PatchMapping("/{courseId}")
+    @PatchMapping("/{courseId}/start")
     @PreAuthorize("hasAuthority('COURSE_START')")
     public ResponseEntity <ApiResponse<CourseResponseDto>> startCourse(@PathVariable UUID courseId) {
         String userEmail = authenticatedUserService.getCurrentUserEmail();
@@ -145,7 +145,7 @@ public class CourseController {
             summary = "Complete Course",
             description = "Complete course for the  currently authenticated user. Requires 'COURSE_COMPLETE' authority."
     )
-    @PatchMapping("/{courseId}")
+    @PatchMapping("/{courseId}/complete")
     @PreAuthorize("hasAuthority('COURSE_COMPLETE')")
     public ResponseEntity <ApiResponse<CourseResponseDto>> completeCourse(@PathVariable UUID courseId) {
         String userEmail = authenticatedUserService.getCurrentUserEmail();
@@ -162,7 +162,7 @@ public class CourseController {
             summary = "Archive Course",
             description = "Archive course for the  currently authenticated user. Requires 'COURSE_ARCHIVE' authority."
     )
-    @PatchMapping("/{courseId}")
+    @PatchMapping("/{courseId}/archive")
     @PreAuthorize("hasAuthority('COURSE_ARCHIVE')")
     public ResponseEntity <ApiResponse<CourseResponseDto>> archiveCourse(@PathVariable UUID courseId) {
         String userEmail = authenticatedUserService.getCurrentUserEmail();

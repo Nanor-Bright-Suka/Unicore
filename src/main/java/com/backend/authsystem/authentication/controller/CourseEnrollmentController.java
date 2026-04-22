@@ -26,7 +26,7 @@ public class CourseEnrollmentController {
             summary = "Enroll in a course",
             description = "Allows a student to enroll in a course. Requires 'COURSE_ENROLLMENT' authority."
     )
-    @PostMapping("/{courseId}")
+    @PostMapping("/{courseId}/enroll")
     @PreAuthorize("hasAuthority('COURSE_ENROLLMENT')")
     public ResponseEntity<ApiResponse<EnrollmentResponseDto>> enrollStudent(@PathVariable UUID courseId) {
         EnrollmentResponseDto enrolledStudent =  enrollmentService.enrollStudent(courseId);
@@ -40,7 +40,7 @@ public class CourseEnrollmentController {
             summary = "Get enrolled students count",
             description = "Returns the total number of students currently enrolled in the specified course. Requires 'COURSE_ENROL_COUNT' authority."
     )
-    @GetMapping("/{courseId}")
+    @GetMapping("/{courseId}/enrolled-count")
     @PreAuthorize("hasAuthority('COURSE_ENROLLMENT_COUNT')")
     public ResponseEntity<ApiResponse<Long>> getEnrolledCount(@PathVariable UUID courseId) {
         long count = enrollmentService.getEnrolledCount(courseId);

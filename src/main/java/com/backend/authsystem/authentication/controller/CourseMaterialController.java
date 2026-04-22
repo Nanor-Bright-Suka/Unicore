@@ -111,7 +111,7 @@ public class CourseMaterialController {
             summary = "Download Course Material",
             description = "Downloads the file for a specific course material. Only enrolled students or the course lecturer can access this material."
     )
-    @GetMapping("/{materialId}")
+    @GetMapping("/{materialId}/download")
     @PreAuthorize("hasAuthority('COURSE_MATERIAL_DOWNLOAD')")
     public ResponseEntity<Resource> downloadMaterial(
             @PathVariable UUID materialId
