@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileController {
 
     private final ProfileService profileService;
-    private final AuthenticatedUserService authenticatedUserService;
+
 
     @Operation(
             summary = "Get My Profile",

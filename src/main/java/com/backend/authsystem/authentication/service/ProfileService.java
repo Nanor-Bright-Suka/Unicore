@@ -4,7 +4,6 @@ import com.backend.authsystem.authentication.dto.profile.ProfileResponseDto;
 import com.backend.authsystem.authentication.dto.profile.ProfileUpdateDto;
 import com.backend.authsystem.authentication.entity.ProfileEntity;
 import com.backend.authsystem.authentication.entity.AccountEntity;
-import com.backend.authsystem.authentication.exception.AssignmentValidationException;
 import com.backend.authsystem.authentication.exception.FileTypeValidationException;
 import com.backend.authsystem.authentication.exception.ResourceNotFoundException;
 import com.backend.authsystem.authentication.exception.UserNotFoundException;
