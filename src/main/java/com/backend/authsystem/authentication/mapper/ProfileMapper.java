@@ -39,14 +39,15 @@ public class ProfileMapper {
     }
 
 
-
-    public void updateDefaultProfile(ProfileEntity entity, ProfileUpdateDto dto) {
-        entity.setFirstName(dto.firstName());
-        entity.setLastName(dto.lastName());
-        entity.setBio(dto.bio());
-        entity.setImageUrl(dto.imageUrl());
-        entity.setUpdatedAt(Instant.now());
-    }
+//
+//    public void updateDefaultProfile(ProfileEntity entity, ProfileUpdateDto dto) {
+//
+//        entity.setFirstName(dto.firstName());
+//        entity.setLastName(dto.lastName());
+//        entity.setBio(dto.bio());
+//        entity.setImageUrl(dto.imageUrl());
+//        entity.setUpdatedAt(Instant.now());
+//    }
 
 
     public ProfileResponseDto toResponse(ProfileEntity profile) {

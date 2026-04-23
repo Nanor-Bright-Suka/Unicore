@@ -220,5 +220,12 @@ public ResponseEntity<ErrorResponse> handleCourseMaterialStateException(CourseMa
 
 
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return buildErrorResponse(ex, HttpStatus.NOT_FOUND);
+    }
+
+
+
 
 }

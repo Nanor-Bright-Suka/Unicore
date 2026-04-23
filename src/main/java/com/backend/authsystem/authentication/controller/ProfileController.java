@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Tag(name = "PROFILE", description = "Endpoints for managing user profiles")
@@ -45,8 +46,8 @@ public class ProfileController {
     @PutMapping
     @PreAuthorize("hasAuthority('PROFILE_UPDATE')")
     public ResponseEntity<ApiResponse<Void>> updateMyProfile(
-            @RequestBody ProfileUpdateDto dto) {
-        profileService.updateMyProfileService(dto);
+            @ModelAttribute  ProfileUpdateDto dto, MultipartFile file) {
+        profileService.updateMyProfileService(dto, file);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ApiResponse<>(true, "Profile updated successfully.", null));
