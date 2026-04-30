@@ -149,5 +149,5 @@ Implemented using a Spring Security filter.
 - Service layer → handles email-based login protection
 
 # Available AT
-https://rbac-server-latest.onrender.com
+https://rbac-server-latest.onrender.com/api/v1/auth/health
 
