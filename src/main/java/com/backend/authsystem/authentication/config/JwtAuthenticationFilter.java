@@ -39,7 +39,7 @@ protected void doFilterInternal(@NotNull HttpServletRequest request,
         throws ServletException, IOException {
 
     try {
-        if (request.getServletPath().startsWith("/api/v1/auth/")) {
+        if (request.getServletPath().startsWith("/api/v1/auth/") || request.getServletPath().startsWith("/actuator") || request.getServletPath().startsWith("/swagger-ui/") || request.getServletPath().startsWith("/v3/api-docs/")) {
             filterChain.doFilter(request, response);
             return;
         }

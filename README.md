@@ -149,5 +149,11 @@ Implemented using a Spring Security filter.
 - Service layer → handles email-based login protection
 
 # Available AT
+https://rbac-server-latest.onrender.com
+
+# Public Health Endpoint
 https://rbac-server-latest.onrender.com/api/v1/auth/health
+
+# The health of the application is internally available  at:
+http://localhost:8080/actuator/health
 
