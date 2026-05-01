@@ -2,10 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Unicore</title>
+    <title>Unicore API Docs</title>
     <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
 </head>
 <body>
-<redoc spec-url="unicore-api.json"></redoc>
+
+<div id="docs"></div>
+
+<script>
+    Redoc.init(
+        "./unicore-api.json",
+        {},
+        document.getElementById("docs")
+    );
+</script>
+
 </body>
 </html>
