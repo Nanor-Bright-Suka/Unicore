@@ -157,3 +157,5 @@ https://rbac-server-latest.onrender.com/api/v1/auth/health
 # The health of the application is internally available  at:
 http://localhost:8080/actuator/health
 
+# View the API documentation at:
+https://nanor-bright-suka.github.io/Unicore/
