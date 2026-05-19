@@ -8,9 +8,6 @@ on:
     branches: [ main ]
 
 jobs:
-  # -----------------------------
-  # Stage 1: Build & Test
-  # -----------------------------
   build-test:
     runs-on: ubuntu-latest
 
@@ -27,13 +24,12 @@ jobs:
       - name: Build & Run Tests
         run: ./mvnw clean verify
 
-  # -----------------------------
-  # Stage 2: Docker Build & Push to Docker Hub
-  # -----------------------------
 
   docker-build:
     runs-on: ubuntu-latest
     needs: build-test
+    if: github.event_name == 'push'
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -49,45 +45,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          # Determine branch type
-          if [ "${GITHUB_REF_NAME}" = "main" ]; then
-            IMAGE_TAG=latest
-            TARGET=production
-          else
-            IMAGE_TAG=dev
-            TARGET=development
-          fi
-          
-          # Build Docker image
-          docker build --target $TARGET -t ${{ secrets.DOCKERHUB_USERNAME }}/rbac-server:$IMAGE_TAG .
-          
-          # Push image to Docker Hub
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/rbac-server:$IMAGE_TAG
+          docker build --target production \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/rbac-server:latest .
 
-    # -----------------------------
-  # Stage 3: Deploy
-  # -----------------------------
-#  deploy:
-#    runs-on: ubuntu-latest
-#    needs: docker-build
-#    steps:
-#      - name: Deploy to Server
-#        uses: appleboy/ssh-action@v0.1.8
-#        with:
-#          host: ${{ secrets.SERVER_HOST }}
-#          username: ${{ secrets.SERVER_USER }}
-#          key: ${{ secrets.SERVER_SSH_KEY }}
-#          script: |
-#            # Choose image based on branch
-#            if [ "${GITHUB_REF_NAME}" = "main" ]; then
-#              IMAGE=spring-auth-server:prod
-#              ENV_FILE=.env.prod
-#            else
-#              IMAGE=spring-auth-server:dev
-#              ENV_FILE=.env.dev
-#            fi
-#
-
-
-
-
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/rbac-server:latest
